@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"algorithms-code-note/util"
+	"fmt"
+)
 
 func coinChange(coins []int, amount int) int {
 	memo := make([]int, amount+1)
@@ -28,7 +31,7 @@ func dp(coins []int, amount int, memo []int) int {
 			continue
 		}
 		// 分解子问题 + 一枚
-		res = min(res, subProblem+1)
+		res = util.Min(res, subProblem+1)
 	}
 	memo[amount] = res
 	if res == maxValue {
@@ -36,12 +39,6 @@ func dp(coins []int, amount int, memo []int) int {
 	}
 	return memo[amount]
 
-}
-func min(a int, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 func main() {
