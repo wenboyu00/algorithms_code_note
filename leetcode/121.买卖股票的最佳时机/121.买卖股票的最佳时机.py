@@ -1,15 +1,23 @@
 from typing import List
 
 """
-套用框架
-# base case：
+#套用框架
+## base case：
 dp[-1][k][0] = dp[i][0][0] = 0 
 dp[-1][k][1] = dp[i][0][1] = -infinity 
-# 状态转移方程： 
+## 状态转移方程： 
 dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i]) 
-dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]
+dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
 
-简化base case
+# 此题: k = 1
+## 根据base case做简化
+dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
+dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][0] - prices[i]) 
+            = max(dp[i-1][1][1], -prices[i])
+## 因为 k = 0的base case = 0, 所以直接简化为 -prices[i]
+
+## 简化base case
+因为发现k都是1，所以k对状态转移没有影响 简化掉k
 因为新状态和相邻的状态有关，不需要dp数组，只需要存储相邻状态即可
 所以：dp_i_0, dp_i_1 = 0, float('-INF')
 """
