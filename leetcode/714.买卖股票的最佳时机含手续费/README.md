@@ -55,12 +55,20 @@ def maxProfit(self, prices: List[int], fee: int) -> int:
 # Go
 
 ```go
-def maxProfit(self, prices: List[int], fee: int) -> int:
-    n = len(prices)
-    dp_i_0, dp_i_1 = 0, float("-INF")
-    for i in range(n):
-        temp = dp_i_0
-        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i] - fee)
-        dp_i_1 = max(dp_i_1, temp - prices[i])
-    return dp_i_0
+/*
+对比122，增加了手续费。
+把手续费从卖出时减去即可
+dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i] - fee)
+*/
+func maxProfit(prices []int, fee int) int {
+	n := len(prices)
+	dpi0 := 0
+	dpi1 := math.MinInt32
+	for i := 0; i < n; i++ {
+		temp := dpi0
+		dpi0 = max(dpi0, dpi1+prices[i]-fee)
+		dpi1 = max(dpi1, temp-prices[i])
+	}
+	return dpi0
+}
 ```
