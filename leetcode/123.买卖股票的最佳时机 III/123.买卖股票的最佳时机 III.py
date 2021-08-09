@@ -4,7 +4,9 @@ from typing import List
 k = 2 套用框架，设置k最高2，从大到小穷举到
 初始化base_case dp矩阵
 把原有dp[-1][k][0] = 0 ，赋值给所有的dp[i][k][0]
-把原有dp[-1][k][1] = -inf ，赋值给所有的dp[i][k][1]
+把原有dp[-1][k][1] = -prices[i] ，赋值给所有的dp[i][k][1]
+特殊情况处理：
+遇到 i=0时，直接[i][k][1] = 0，[i][k][1] = - prices[i],因为初始化已经赋值所以直接continue
 """
 
 
@@ -23,6 +25,8 @@ class Solution:
         for i in range(n):
             # 穷举k, 从大到小[2,1]
             for k in range(2, 0, -1):
+                if i == 0:
+                    continue
                 # 状态转移方程
                 dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
                 dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])
