@@ -54,3 +54,86 @@
 	<li><code>1 <= k <= sz</code></li>
 </ul>
 <div><div>Related Topics</div><div><li>递归</li><li>链表</li></div></div>
+
+# Python
+
+```python
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        """
+        k为一组反转链表
+        递归反转k个节点
+        1.定义a，b并赋值为head，b前进k个节点。反转a~b之间节点
+        2.递归后续链表并连接起来
+        """
+        if head is None:
+            return head
+        # 区间[a,b)包含k个待反转
+        a = b = head
+        # b前进k个达到反转结束位置
+        for i in range(k):
+            # 不足k个，不需要反转 base case
+            if b is None:
+                return head
+            b = b.next
+        # 反转前k个元素
+        new_head = self.reverseAB(a, b)
+        # 递归反转后续链表并链接起来
+        a.next = self.reverseKGroup(b, k)
+        return new_head
+
+    def reverseAB(self, a: ListNode, b: ListNode):
+        # 反转区间[a,b)的元素，左闭右开
+        pre, cur = None, a
+        # cur = b 时终止，即a~(b-1)
+        while cur != b:
+            tmp = cur.next
+            cur.next = pre
+
+            pre = cur
+            cur = tmp
+        # 返回反转后头节点
+        return pre
+```
+
+# Go
+
+```go
+func reverseKGroup(head *ListNode, k int) *ListNode {
+   if head == nil {
+      return head
+   }
+   a := head
+   b := head
+   // b节点前进k位，反转a~b之间共k个节点
+   // 如果数量不够，就不反转直接返回
+   for i := 0; i < k; i++ {
+      if b == nil {
+         return head
+      }
+      b = b.Next
+   }
+   // 反转ab，再对后续进行递归
+   newHead := reverseAB(a, b)
+   a.Next = reverseKGroup(b, k)
+   return newHead
+}
+
+func reverseAB(a *ListNode, b *ListNode) *ListNode {
+   // 反转a-(b-1)之间的节点，并返回新头节点
+   var pre *ListNode
+   cur := a
+   // cur==b，完成a~b之间的反转
+   for cur != b {
+      // 实现反转
+      tmp := cur.Next
+      cur.Next = pre
+
+      // 前，当前节点进一步
+      pre = cur
+      cur = tmp
+   }
+   return pre
+}
+```
+
