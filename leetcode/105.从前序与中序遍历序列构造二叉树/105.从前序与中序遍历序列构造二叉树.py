@@ -29,6 +29,7 @@ class Solution:
         for i in range(in_start, in_end + 1):
             if inorder[i] == root_val:
                 index = i
+                break
         # 中序是 左根右，在数组中 根的左边是左子树，根的index-中序的开始 就是左子树长度
         left_size = index - in_start
         root = TreeNode(root_val, None, None)
