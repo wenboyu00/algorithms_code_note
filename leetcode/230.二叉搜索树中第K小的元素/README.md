@@ -33,3 +33,55 @@
 
 <p><strong>进阶：</strong>如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 <code>k</code> 小的值，你将如何优化算法？</p>
 <div><div>Related Topics</div><div><li>树</li><li>深度优先搜索</li><li>二叉搜索树</li><li>二叉树</li></div></div>
+
+# Python
+
+```python
+class Solution:
+    """
+    根据BST的特性，左小右大，子树依然，使用中序遍历找到第k个数
+    """
+
+    def __init__(self):
+        self.res = 0
+        # 排名
+        self.rank = 0
+
+    def kthSmallest(self, root: TreeNode, k: int) -> int:
+        self.traverse(root, k)
+        return self.res
+
+    def traverse(self, root, k):
+        if root is None:
+            return root
+        self.traverse(root, k)
+        self.rank += 1
+        if k == self.rank:
+            self.res = root.val
+        self.traverse(root, k)
+```
+
+# Go
+
+```go
+func kthSmallest(root *TreeNode, k int) int {
+   res := 0
+   rank := 0
+
+   var reverse func(root *TreeNode, k int)
+
+   reverse = func(root *TreeNode, k int) {
+      if root == nil {
+         return
+      }
+      reverse(root.Left, k)
+      rank += 1
+      if rank == k {
+         res = root.Val
+      }
+      reverse(root.Right, k)
+   }
+   reverse(root, k)
+   return res
+}
+```
