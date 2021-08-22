@@ -60,3 +60,66 @@
 	<li>保证输入为 <strong>有向无环图（DAG）</strong></li>
 </ul>
 <div><div>Related Topics</div><div><li>深度优先搜索</li><li>广度优先搜索</li><li>图</li><li>回溯</li></div></div>
+
+# Python
+
+```python
+class Solution:
+    def __init__(self):
+        # 记录所有路径
+        self.res = []
+
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        path = list()
+        self.traverse(graph, 0, path)
+        return self.res
+
+    def traverse(self, graph: List[List[int]], s: int, path: List[int]):
+        # 添加节点 s 到路径
+        path.append(s)
+        n = len(graph)
+        # base case 到达终点
+        if s == n - 1:
+            # 把路径添加到结果集中,从路径中移除节点s
+            self.res.append([i for i in path])
+            path.pop()
+            return
+
+        # 递归每个相邻的节点
+        for v in graph[s]:
+            self.traverse(graph, v, path)
+        # 从路径移除节点 s
+        path.pop()
+```
+
+# Go
+
+```go
+func allPathsSourceTarget(graph [][]int) [][]int {
+   // 回溯算法，DFS
+   res := [][]int{}
+   // 储存路径
+   path := []int{}
+
+   var traverse func(graph [][]int, s int, path []int)
+   traverse = func(graph [][]int, s int, path []int) {
+      // 记录路径
+      path = append(path, s)
+      // base case 到达终点，保存
+      if s == len(graph)-1 {
+         // 把路径添加到结果集中,从路径中移除节点s
+         res = append(res, append([]int{}, path...))
+         path = path[:len(path)-1]
+         return
+      }
+      // 递归每个相邻的节点
+      for _, v := range graph[s] {
+         traverse(graph, v, path)
+      }
+      // 从路径移除节点 s
+      path = path[:len(path)-1]
+   }
+   traverse(graph,0,path)
+   return res
+}
+```
