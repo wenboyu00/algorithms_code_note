@@ -31,7 +31,7 @@ func dp(coins []int, amount int, memo []int) int {
 			continue
 		}
 		// 分解子问题 + 一枚
-		res = util.Min(res, subProblem+1)
+		res = util.IntMin(res, subProblem+1)
 	}
 	memo[amount] = res
 	if res == maxValue {
