@@ -19,6 +19,16 @@
 #        @return the nested list that this NestedInteger holds, if it holds a nested list
 #        Return None if this NestedInteger holds a single integer
 #        """
+"""
+__init__ : 用栈进行储存
+hasNext : 完成列表节点的展开
+    - 如果是integer直接返回true
+    - 如果是列表，就写入栈
+    - 为空时返回False
+next : 返回栈顶数据
+
+"""
+
 
 class NestedIterator:
     def __init__(self, nestedList: [NestedInteger]):

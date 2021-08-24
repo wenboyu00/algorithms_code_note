@@ -46,3 +46,80 @@ return res</pre>
 	<li>嵌套列表中的整数值在范围 <code>[-10<sup>6</sup>, 10<sup>6</sup>]</code> 内</li>
 </ul>
 <div><div>Related Topics</div><div><li>栈</li><li>树</li><li>深度优先搜索</li><li>设计</li><li>队列</li><li>迭代器</li></div></div>
+
+# Python
+
+```python
+"""
+__init__ : 用栈进行储存
+hasNext : 完成列表节点的展开
+    - 如果是integer直接返回true
+    - 如果是列表，就写入栈
+    - 为空时返回False
+next : 返回栈顶数据
+
+"""
+
+
+class NestedIterator:
+    def __init__(self, nestedList: [NestedInteger]):
+        self.stack = []
+        # 从尾到头遍历
+        for i in range(len(nestedList) - 1, -1, -1):
+            self.stack.append(nestedList[i])
+
+    def next(self) -> int:
+        cur = self.stack.pop()
+        return cur.getInteger()
+
+    def hasNext(self) -> bool:
+        while self.stack:
+            cur = self.stack[-1]
+            if cur.isInteger():
+                return True
+            self.stack.pop()
+            for i in range(len(cur.getList()) - 1, -1, -1):
+                self.stack.append(cur.getList[i])
+        return False
+```
+
+# Go
+
+```go
+package main
+
+type NestedIterator struct {
+   Stack []*NestedInteger
+}
+
+func Constructor(nestedList []*NestedInteger) *NestedIterator {
+   stack := []*NestedInteger{}
+   for i := len(nestedList) - 1; i >= 0; i-- {
+      stack = append(stack, nestedList[i])
+   }
+   return &NestedIterator{Stack: stack}
+}
+
+func (this *NestedIterator) Next() int {
+   cur := this.Stack[len(this.Stack)-1]
+   this.Stack = this.Stack[:len(this.Stack)-1]
+   return cur.GetInteger()
+}
+
+func (this *NestedIterator) HasNext() bool {
+   for len(this.Stack) > 0 {
+      cur := this.Stack[len(this.Stack)-1]
+      if cur.IsInteger() {
+         return true
+      }
+      this.Stack = this.Stack[:len(this.Stack)-1]
+      list := cur.GetList()
+      for i := len(list) - 1; i >= 0; i-- {
+         this.Stack = append(this.Stack, list[i])
+
+      }
+   }
+   return false
+}
+```
+
