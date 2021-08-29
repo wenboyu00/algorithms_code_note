@@ -49,23 +49,32 @@ class LRUCache:
 
     # 添加节点到链表头部
     def add2head(self, node):
+        # 节点接入链表头部
         node.pre = self.head
         node.next = self.head.next
+        # 头部接入节点
+        # 原头部节点的pre指向node
+        # 头节点next指向node
         self.head.next.pre = node
         self.head.next = node
 
     # 删除节点
     def remove_node(self, node):
+        # 跳过当前节点
+        # 节点上个节点next = 节点下一个节点
+        # 节点下一个节点pre = 节点上一个节点
         node.pre.next = node.next
         node.next.pre = node.pre
 
     # 移动节点到头部
     def move2head(self, node):
+        # 删除当前节点，并添加当前节点到头部
         self.remove_node(node)
         self.add2head(node)
 
     # 删除尾部节点
     def remove_tail(self):
+        # 取出尾节点，并删除
         node = self.tail.pre
         self.remove_node(node)
         return node
