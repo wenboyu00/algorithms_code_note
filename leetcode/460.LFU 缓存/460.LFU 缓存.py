@@ -70,8 +70,9 @@ class LFUCache:
         """
         插入指定key:value
         如果key存在则更新value和频率
-        如果key不存在，插入新元素
+        如果key不存在，计划插入新元素
             - 如果已满，则删除频率最低的元素，
+            - 插入新元素
         """
         if key in self.key_map:
             node = self.key_map[key]

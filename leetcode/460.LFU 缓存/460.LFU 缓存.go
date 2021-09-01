@@ -26,14 +26,16 @@ func (this *DLinkedList) addFirst(node *Node) {
 
 }
 func (this *DLinkedList) delete(node *Node) int {
-	if this.head.next == this.tail{
+	if this.head.next == this.tail {
 		return -1
 	}
-	node.next.pre = node.pre
 	node.pre.next = node.next
+	node.next.pre = node.pre
+	node.next = nil
+	node.pre = nil
 	return node.key
 }
-func (this *DLinkedList) getList() *Node {
+func (this *DLinkedList) getLast() *Node {
 	if this.head.next == this.tail {
 		return nil
 	}
@@ -71,7 +73,7 @@ func (this *LFUCache) Get(key int) int {
 }
 
 func (this *LFUCache) Put(key int, value int) {
-	if this.capacity == 0{
+	if this.capacity == 0 {
 		return
 	}
 	if _, ok := this.keyMap[key]; ok {
@@ -79,23 +81,21 @@ func (this *LFUCache) Put(key int, value int) {
 		node.value = value
 		this.updateFreqMap(node, false)
 	} else {
-		node := &Node{key: key, value: value, freq: 1}
-		// 更新到keyMap
-		this.keyMap[key] = node
 		// 超过容量删除
 		if len(this.keyMap) == this.capacity {
 			this.removeMinFreqLastNode()
 		}
+		node := &Node{key: key, value: value, freq: 1}
+		// 更新到keyMap
+		this.keyMap[key] = node
 		// 更新到FreqMap
 		this.updateFreqMap(node, true)
-
 	}
 
 }
 
 func (this *LFUCache) updateFreqMap(node *Node, isNew bool) {
 	if isNew {
-		println(node.key, node.value,node.freq)
 		this.minFreq = 1
 		// 插入到链表头部
 		this.insertFirst(node)
@@ -107,7 +107,7 @@ func (this *LFUCache) updateFreqMap(node *Node, isNew bool) {
 		// 插入到链表头部
 		this.insertFirst(node)
 		// 更新最小freq
-		if _, ok := this.keyMap[this.minFreq]; !ok {
+		if _, ok := this.freqMap[this.minFreq]; !ok {
 			this.minFreq += 1
 		}
 	}
@@ -125,7 +125,7 @@ func (this *LFUCache) insertFirst(node *Node) {
 
 func (this *LFUCache) deleteNode(node *Node) {
 	// 在freq链表中删除节点
-	if _, ok := this.keyMap[node.freq]; !ok {
+	if _, ok := this.freqMap[node.freq]; !ok {
 		return
 	}
 	dLinkedList := this.freqMap[node.freq]
@@ -138,17 +138,24 @@ func (this *LFUCache) deleteNode(node *Node) {
 func (this *LFUCache) removeMinFreqLastNode() {
 	// 在freq 链表找到最少频率的最后一个节点，并删除
 	dLinkedList := this.freqMap[this.minFreq]
-	node := dLinkedList.getList()
+	node := dLinkedList.getLast()
 	dLinkedList.delete(node)
+	// 在keyMap删除节点
+	delete(this.keyMap, node.key)
 	// 此freq链表不存在就删除
 	if dLinkedList.isEmpty() {
-		delete(this.freqMap, node.freq)
-		// 在keyMap删除节点
-		delete(this.keyMap, node.key)
+		delete(this.freqMap, this.minFreq)
+
 	}
 }
 
 func main() {
 	cache := Constructor(2)
-	cache.Put(1,1)
+	cache.Put(2, 1)
+	cache.Put(2, 2)
+	println(cache.Get(2))
+	cache.Put(1, 1)
+	cache.Put(4, 1)
+	println(cache.Get(2))
+
 }
