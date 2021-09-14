@@ -6,12 +6,11 @@ class Solution:
         n = len(nums)
         if n == 0:
             return 0
-        slow = fast = 0
-        for i in range(n):
+        slow = 0
+        for fast in range(n):
             if nums[slow] != nums[fast]:
                 slow += 1
                 nums[slow] = nums[fast]
-            fast += 1
         return slow + 1
 
 
