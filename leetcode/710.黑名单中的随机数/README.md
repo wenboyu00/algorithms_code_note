@@ -51,3 +51,91 @@
 
 <p>输入是两个列表：调用成员函数名和调用的参数。<code>Solution</code>的构造函数有两个参数，<code>n</code> 和黑名单 <code>blacklist</code>。<code>pick</code> 没有参数，输入参数是一个列表，即使参数为空，也会输入一个 <code>[]</code> 空列表。</p>
 <div><div>Related Topics</div><div><li>哈希表</li><li>数学</li><li>二分查找</li><li>排序</li><li>随机化</li></div></div>
+
+# Python
+
+```python
+class Solution:
+    """
+    共有N个数字，黑名单个数=len(blacklist), 白名单个数 n - len(blacklist).
+    为了可以使用random.randint(0, self.white_len - 1)随机取得white_len个白名单数字中的一个。
+    使用 map 将white_len中黑名单的数字和white_len之后白名单的数字映射起来
+    pick时，使用random随机选择一个索引，如果这个索引被到黑名单上，就返回对应的白名单的位置
+    """
+
+    def __init__(self, n: int, blacklist: List[int]):
+        # 黑名单个数: len(blacklist)
+        # 白名单个数(white_len): n - len(blacklist)
+        self.white_len = n - len(blacklist)
+        # black_set，在white_len之前黑名单中的数字
+        black_set = set()
+        for i in blacklist:
+            if i < self.white_len:
+                black_set.add(i)
+
+        # white_set：在white_len之后的白名单中的数字
+        white_set = set()
+        blacklist_set = set(blacklist)
+        for i in range(self.white_len, n):
+            if i not in blacklist_set:
+                white_set.add(i)
+        # 使用map将black_set中的元素和white—set映射起来
+        self.map = dict(zip(black_set, white_set))
+
+    def pick(self) -> int:
+        # 在前white_len个数字中随机选取
+        res = random.randint(0, self.white_len - 1)
+        # 如res是map的key，说明这个位置是黑名单中的数字，通过映射取出其对应的白名单的数字
+        if res in self.map:
+            return self.map[res]
+        # 如res不是map的key，说明这个位置是白名单中的数字，直接返回
+        else:
+            return res
+```
+
+# Go
+
+```go
+import "math/rand"
+
+type Solution struct {
+   mapping map[int]int
+   n       int
+}
+
+func Constructor(n int, blacklist []int) Solution {
+   mapping := map[int]int{}
+
+   whiteLen := n - len(blacklist)
+   // 在whiteLen中的黑名单数字
+   inWhiteBlack := make([]int, 0)
+   blacklistSet := make(map[int]int8, len(blacklist))
+   for _, i := range blacklist {
+      if i < whiteLen {
+         inWhiteBlack = append(inWhiteBlack, i)
+      }
+      blacklistSet[i] = -1
+   }
+   // 在whiteLen之后的白名单数字
+   NotInWhite := make([]int, 0)
+   for i := whiteLen; i < n; i++ {
+      if _, ok := blacklistSet[i]; !ok {
+         NotInWhite = append(NotInWhite, i)
+      }
+   }
+   // 把inWhiteBlack和NotInWhite映射上，数量是一致的
+   iwbN := len(inWhiteBlack)
+   for i := 0; i < iwbN; i++ {
+      mapping[inWhiteBlack[i]] = NotInWhite[i]
+   }
+   return Solution{mapping, whiteLen}
+}
+
+func (this *Solution) Pick() int {
+   index := rand.Int() % this.n - 1
+   if _, ok := this.mapping[index]; ok {
+      return this.mapping[index]
+   }
+   return index
+}
+```
