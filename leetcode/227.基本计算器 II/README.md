@@ -1,3 +1,5 @@
+# 题目
+
 <p>给你一个字符串表达式 <code>s</code> ，请你实现一个基本计算器来计算并返回它的值。</p>
 
 <p>整数除法仅保留整数部分。</p>
@@ -40,4 +42,70 @@
 </ul>
 </div>
 </div>
-<div><div>Related Topics</div><div><li>栈</li><li>数学</li><li>字符串</li></div></div><br><div><li>👍 458</li><li>👎 0</li></div>
+
+<div><div>Related Topics</div><div><li>栈</li><li>数学</li><li>字符串</li></div></div>
+
+# Python
+
+```python
+def calculate(self, s: str) -> int:
+    n = len(s)
+    stk = []
+    num = 0
+    sign = "+"
+    for i in range(n):
+        c = s[i]
+        # 如何是数字字符且不为空,更新c到num上
+        if c.isdigit():
+            num = 10 * num + int(c)
+        # 如果是非数字 or 是最后一个元素
+        if (not c.isdigit() and c != " ") or i == n - 1:
+            if sign == "+":
+                stk.append(num)
+            elif sign == '-':
+                stk.append(-num)
+            # 实现先乘除，后加减
+            # 把栈顶元素和当前元素计算后重新写入栈顶
+            elif sign == '*':
+                stk[-1] = stk[-1] * num
+            elif sign == '/':
+                stk[-1] = int(stk[-1] / float(num))
+            num = 0
+            sign = c
+    return sum(stk)
+```
+
+# Go
+
+```go
+func calculate(s string) int {
+   stk := []int{}
+   sign := '+'
+   num := 0
+   for i, ch := range s {
+      isDigit := '0' <= ch && ch <= '9'
+      if isDigit {
+         num = 10*num + int(ch-'0')
+      }
+      if !isDigit && ch != ' ' || i == len(s)-1 {
+         if sign == '+' {
+            stk = append(stk, num)
+         } else if sign == '-' {
+            stk = append(stk, -num)
+         } else if sign == '*' {
+            stk[len(stk)-1] *= num
+         } else if sign == '/' {
+            stk[len(stk)-1] /= num
+         }
+         num = 0
+         sign = ch
+      }
+   }
+   ans := 0
+   for _, v := range stk {
+      ans += v
+   }
+   return ans
+}
+```
+
