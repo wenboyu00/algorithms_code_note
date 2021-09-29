@@ -29,6 +29,8 @@ class Solution:
         while left >= 0 and right < len(s) and s[left] == s[right]:
             left -= 1
             right += 1
+        # left+1 是循环结束前left的位置是正确的位置
+        # right 在前开后闭中需要+1，结束前right+=1刚好合适
         return s[left + 1: right]
 
     def max_len_str(self, s1, s2):
