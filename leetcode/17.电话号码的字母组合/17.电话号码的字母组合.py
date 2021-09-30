@@ -1,30 +1,42 @@
+from typing import List
+
+
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
-        # 组合，回溯算法
-        mapping = {
-            "2": "abc",
-            "3": "def",
-            "4": "ghi",
-            "5": "jkl",
-            "6": "mno",
-            "7": "pqrs",
-            "8": "tuv",
-            "9": "wxyz"
-        }
-        need_list = []
-        for s in digits:
-            need_list.append(mapping.get(s, ''))
-        need_str = "".join(need_list)
+        # 组合问题，回溯算法(DFS)
+        # 每个数字对应多个字母 进行组合
+        # 每组数字的长度 是 每个数字的长度 len(digits)
+        # 每次循环拿对应的字母 添加到路径列表中
+        phone = {'2': ['a', 'b', 'c'],
+                 '3': ['d', 'e', 'f'],
+                 '4': ['g', 'h', 'i'],
+                 '5': ['j', 'k', 'l'],
+                 '6': ['m', 'n', 'o'],
+                 '7': ['p', 'q', 'r', 's'],
+                 '8': ['t', 'u', 'v'],
+                 '9': ['w', 'x', 'y', 'z']}
         result = []
         path = []
+        if not digits:
+            return result
+        n = len(digits)
 
-        def backtrack(path, need_str):
-            if len(path) == len(need_list):
+        def backtrack(path, index):
+            if len(path) == n:
                 result.append(''.join(path))
                 return
-            for s in need_list:
+            # 选择列表 数字对应的列表
+            # 但是选择的是 数字，所以传入index对数字进行选择
+            digit = digits[index]
+            for s in phone[digit]:
                 path.append(s)
-                backtrack(path, need_str)
+                backtrack(path, index + 1)
                 path.pop()
 
-        backtrack(path, need_str)
+        backtrack(path, 0)
+        return result
+
+
+if __name__ == '__main__':
+    digits = "23"
+    print(Solution().letterCombinations(digits))
