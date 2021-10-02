@@ -43,3 +43,71 @@
 
 <p><strong>进阶：</strong>你可以设计一个时间复杂度为 <code>O(log n)</code> 的解决方案吗？</p>
 <div><div>Related Topics</div><div><li>数组</li><li>二分查找</li></div></div>
+
+
+
+# Python
+
+```python
+def search(self, nums: List[int], target: int) -> int:
+    """
+    题目要求 logn，暗示二分查找
+    在一个旋转后的数组进行二分查找？
+    旋转后数组局部是有序的，通过mid和target的关系来找部分有序的地方，进行二分查找。
+    如果 nums[left]<= nums[mid]并且 nums[left]<=target<num[mid]时 前半部是有序的，在前半部找，否则去后半找，
+    如果 nums[left]> nums[mid]并且 nums[mid]< target<=num[right]时，后半部有序，在后半部找，否则去前半找。
+    """
+    if not nums:
+        return -1
+    n = len(nums)
+    left = 0
+    right = n - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    return -1
+```
+
+# Go
+
+```go
+func search(nums []int, target int) int {
+   n := len(nums)
+   if n == 0 {
+      return -1
+   }
+   left := 0
+   right := n - 1
+   for left <= right {
+      mid := left + (right-left)/2
+      if nums[mid] == target {
+         return mid
+      }
+      if nums[left] <= nums[mid] {
+         if nums[left] <= target && target < nums[mid] {
+            right = mid - 1
+         } else {
+            left = mid + 1
+         }
+      } else {
+         if nums[mid] < target && target <= nums[right] {
+            left = mid + 1
+         } else {
+            right = mid - 1
+         }
+      }
+   }
+   return -1
+}
+```
