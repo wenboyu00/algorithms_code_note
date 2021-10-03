@@ -52,3 +52,77 @@
 	<li><code>1 <= target <= 500</code></li>
 </ul>
 <div><div>Related Topics</div><div><li>数组</li><li>回溯</li></div></div>
+
+# Python
+
+```python
+def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+    """
+    组合-回溯
+        - 可重复组合+多数求和
+    可重复组合->用回溯算法
+        - 避免重复->设置当前递归起始位置
+    求和，逐次减值方式，=0时 就满足条件，<0 就超过条件
+    剪枝，在进入递归之前发现 减去当前值<0 直接返回
+    """
+    result = []
+    path = []
+
+    def backtrack(target, start):
+        # 满足条件
+        if target == 0:
+            result.append(list(path))
+            return
+        for i in range(start, len(candidates)):
+            num = candidates[i]
+            # 剪枝，<0 不满足需要
+            if target - num < 0:
+                return
+            # 加入选择
+            path.append(num)
+            # 递归，减去当前值为目标值和从当前起点向后搜索
+            backtrack(target - num, i)
+            # 撤销选择
+            path.pop()
+
+    candidates = sorted(candidates)
+    backtrack(target, 0)
+    return result
+```
+
+# Go
+
+```go
+func combinationSum(candidates []int, target int) [][]int {
+   // 回溯算法-组合，用startIndex来控制重复选择
+   result := [][]int{}
+   path := []int{}
+   n := len(candidates)
+   var backtrack func(target int, start int)
+   backtrack = func(target int, start int) {
+      // 满足条件
+      if target == 0 {
+         result = append(result, append([]int{}, path...))
+         return
+      }
+      // 遍历选择
+      for i := start; i < n; i++ {
+         num := candidates[i]
+         // 剪枝，超出范围
+         if target-num < 0 {
+            return
+         }
+         // 添加选择
+         path = append(path, num)
+         // 回溯（减去当前值=目标值，起始位置为当前位置->去掉重复)
+         backtrack(target-num, i)
+         // 撤销选择
+         path = path[:len(path)-1]
+      }
+   }
+   // 排序
+   sort.Ints(candidates)
+   backtrack(target, 0)
+   return result
+}
+```
