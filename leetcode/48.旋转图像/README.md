@@ -44,3 +44,56 @@
 	<li><code>-1000 <= matrix[i][j] <= 1000</code></li>
 </ul>
 <div><div>Related Topics</div><div><li>数组</li><li>数学</li><li>矩阵</li></div></div>
+
+# Python
+
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        1.左上-右下 对角线翻转
+        2.左右 垂直线翻转
+        """
+        n = len(matrix)
+        # 左上右下 对角线翻转
+        for i in range(n):
+            for j in range(i):
+                tmp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = tmp
+        # 左右 垂直线翻转
+        for i in range(n):
+            left = 0
+            right = n - 1
+            while left < right:
+                temp = matrix[i][left]
+                matrix[i][left] = matrix[i][right]
+                matrix[i][right] = temp
+                left += 1
+                right -= 1
+```
+
+# Go
+
+```go
+func rotate(matrix [][]int) {
+   n := len(matrix)
+   // 对角线 翻转
+   for i := 0; i < n; i++ {
+      for j := 0; j < i; j++ {
+         tmp := matrix[i][j]
+         matrix[i][j] = matrix[j][i]
+         matrix[j][i] = tmp
+      }
+   }
+   // 垂直 翻转
+   for i := 0; i < n; i++ {
+      for left, right := 0, n-1; left < right; left, right = left+1, right-1 {
+         tmp := matrix[i][left]
+         matrix[i][left] = matrix[i][right]
+         matrix[i][right] = tmp
+      }
+   }
+}
+```
+
