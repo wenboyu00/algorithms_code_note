@@ -1,6 +1,7 @@
 package main
 
 func exist(board [][]byte, word string) bool {
+	//先找到和第一个字母相同的格子，然后回溯寻找剩下的
 	m := len(board)
 	n := len(board[0])
 	wordLen := len(word)
@@ -12,6 +13,7 @@ func exist(board [][]byte, word string) bool {
 
 	var backtrack func(row int, col int, idx int) bool
 	backtrack = func(row int, col int, idx int) bool {
+		// 结束条件：字符索引到字符串尾部
 		if idx == wordLen {
 			return true
 		}
@@ -24,14 +26,16 @@ func exist(board [][]byte, word string) bool {
 		if board[row][col] != word[idx] {
 			return false
 		}
+		// 添加选择
 		visited[row][col] = true
+		// 从格子的上下左右寻找和下一个字符 是否相等的结果
 		if backtrack(row+1, col, idx+1) ||
 			backtrack(row-1, col, idx+1) ||
 			backtrack(row, col+1, idx+1) ||
 			backtrack(row, col-1, idx+1) {
 			return true
 		}
-
+		// 删除选择
 		visited[row][col] = false
 		return false
 	}
