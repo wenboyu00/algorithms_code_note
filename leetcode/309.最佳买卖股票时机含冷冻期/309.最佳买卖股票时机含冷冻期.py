@@ -8,7 +8,7 @@ from typing import List
 dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i]) 
 dp[i][1] = max(dp[i-1][1], dp[i-2][1] - prices[i]) 
 第i天要购买的时候，要从 i-2 的状态，跳过一天
-最后改为：
+变量优化为:
 dp[i][0] ==> dp_i_0,第i天未持有的利润
 dp[i][1] ==> dp_i_1,第i天持有的利润
 dp[i-2][- ==> dp_pre_0,第i-2天未持有的利润，包括冷静期
