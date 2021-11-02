@@ -54,10 +54,75 @@ def partition(nums, left, right):
     return i
 
 
+def top_k_split(nums, k, left, right):
+    """
+    寻找到第k个数停止递归，使得nums数组中index左边是前k个小的数，index右边是后面n-k个大的数
+    """
+    #
+    if left < right:
+        index = partition(nums, left, right)
+        if index == k:
+            return
+        elif index < k:
+            top_k_split(nums, k, index + 1, right)
+        else:
+            top_k_split(nums, k, left, index - 1)
+
+
+def top_k_smalls(nums, k):
+    """
+    获得前k小的数
+    """
+    top_k_split(nums, k, 0, len(nums) - 1)
+    return nums[:k]
+
+
+def top_k_small(nums, k):
+    """
+    获得第k小的数
+    """
+    top_k_split(nums, k, 0, len(nums) - 1)
+    # 右边是开区间，需要-1
+    return nums[k - 1]
+
+
+def top_k_larges(nums, k):
+    """
+    获得前K大的数
+    partition是升序排列，让index左边为前n-k个小的数，则index右边为前k个大的数
+    """
+    n = len(nums)
+    top_k_split(nums, n - k, 0, n - 1)
+    return nums[n - k:]
+
+
+def top_k_large(nums, k):
+    """
+    第k大的数
+    """
+    n = len(nums)
+    top_k_split(nums, n - k, 0, n - 1)
+    return nums[n - k]
+
+
 if __name__ == '__main__':
+    # 快排
     arr = [1, 3, 2, 2, 0]
     quick_sort(arr, 0, len(arr) - 1)
-    print(arr)
-    arr = [3, 2, 3, 1, 2, 4, 5, 5, 6]
-    quick_sort(arr, 0, len(arr) - 1)
-    print(arr)
+    print(f'快排:{arr}')
+    # 前k小的数
+    arr = [1, 3, 2, 3, 0, -19]
+    k = 2
+    print(f'列表:{arr} k:{k} 前k小的数:{top_k_smalls(arr, k)}')
+    # 第k小的数
+    arr = [1, 3, 2, 3, 0, -19]
+    k = 3
+    print(f'列表:{arr} k:{k} 第k小的数:{top_k_small(arr, k)}')
+    # 前k大的数
+    arr = [1, 3, -2, 3, 0, -19]
+    k = 3
+    print(f'列表:{arr} k:{k} 前k大的数:{top_k_larges(arr, k)}')
+
+    arr = [1, 3, -2, 3, 0, -19]
+    k = 2
+    print(f'列表:{arr} k:{k} 第k大的数:{top_k_large(arr, k)}')
