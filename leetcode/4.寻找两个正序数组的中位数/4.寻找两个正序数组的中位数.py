@@ -28,8 +28,24 @@ class Solution:
         else:
             return (new[n // 2] + new[n // 2 - 1]) / 2
 
+    def findMedianSortedArraysLogm(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        划分数组法
+        合并后的数组中值左半边由nums1和nums2左半边贡献元素，找到num1分割的位置也就找到nums2
+        分割线的条件是：分割线左边<=右边
+            - L1 <= R2
+            - L2 <= R1
+
+        """
+        len_1, len_2 = len(nums1), len(nums2)
+        if len_1 > len_2:
+            return self.findMedianSortedArraysLogm(nums2, nums1)
+        if len_1 == 0:
+            return nums2[(len_2 - 1) // 2] + nums2[len_2 // 2] / 2
+
 
 if __name__ == '__main__':
     nums1 = [1, 2]
     nums2 = [3, 4]
-    print(Solution().findMedianSortedArrays(nums1, nums2))
+    # print(Solution().findMedianSortedArrays(nums1, nums2))
+    print(Solution().findMedianSortedArraysLogm(nums1, nums2))
