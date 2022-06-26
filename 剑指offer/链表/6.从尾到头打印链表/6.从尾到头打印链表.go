@@ -1,9 +1,8 @@
 package main
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import "algorithms-code-note/剑指offer/structures"
+
+type ListNode = structures.ListNode
 
 /*
 遍历一遍把val添加到数组中，然从后向前遍历数组并添加到结果列表中
