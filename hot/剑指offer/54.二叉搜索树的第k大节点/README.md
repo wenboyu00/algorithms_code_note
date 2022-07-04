@@ -1,3 +1,5 @@
+# 题目
+
 <p>给定一棵二叉搜索树，请找出其中第 <code>k</code> 大的节点的值。</p>
 
 <p>&nbsp;</p>
@@ -33,4 +35,54 @@
 <ul>
 	<li>1 ≤ k ≤ 二叉搜索树元素个数</li>
 </ul>
-<div><div>Related Topics</div><div><li>树</li><li>深度优先搜索</li><li>二叉搜索树</li><li>二叉树</li></div></div><br><div><li>👍 318</li><li>👎 0</li></div>
+# Python
+
+```python
+"""
+bst,前序是从小到大，后序是从大到小，给后续遍历节点计数，count==k时，则为k大的数
+"""
+
+
+class Solution:
+    def __init__(self):
+        self.count = 0
+        self.result = -1
+
+    def kthLargest(self, root: TreeNode, k: int) -> int:
+
+        self.traverse(root, k)
+        return self.result
+
+    def traverse(self, root, k):
+        if root is None:
+            return root
+        self.traverse(root.right, k)
+        self.count += 1
+        if self.count == k:
+            self.result = root.val
+        self.traverse(root.left, k)
+```
+
+# Go
+
+```go
+func kthLargest(root *TreeNode, k int) int {
+   count := 0
+   result := -1
+   var reverse func(root *TreeNode, k int)
+
+   reverse = func(root *TreeNode, k int) {
+      if root == nil {
+         return
+      }
+      reverse(root.Right, k)
+      count += 1
+      if count == k {
+         result = root.Val
+      }
+      reverse(root.Left, k)
+   }
+   reverse(root, k)
+   return result
+}
+```

@@ -1,6 +1,6 @@
 package main
 
-import "algorithms-code-note/剑指offer/structures"
+import "algorithms-code-note/util/structures"
 
 type ListNode = structures.ListNode
 
