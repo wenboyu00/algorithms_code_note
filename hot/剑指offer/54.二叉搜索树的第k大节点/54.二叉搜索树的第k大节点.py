@@ -1,7 +1,7 @@
 from util.leetcode_type import TreeNode
 
 """
-bst,前序是从小到大，后序是从大到小，给后续遍历节点计数，count==k时，则为k大的数
+bst,前序是从小到大，中序是从大到小，给遍历节点计数，count==k时，则为k大的数
 """
 
 
