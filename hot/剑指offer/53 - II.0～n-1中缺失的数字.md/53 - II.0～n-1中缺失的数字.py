@@ -3,8 +3,8 @@
 左子数组， nums[i] = i 那部分
 右子数组, nums[i] != i 那部分的
 查找右子数组的首位
-nums[mid] == mid时，说明在左子数组中，右子数组首位在 [mid+1,left]中,因此 right = mid+1
-nums[mid] != mid时, 说明在右子数组中，左子数组的末尾在 [right, m-1]中,因此 left = mid -1
+nums[mid] == mid时, 说明在左子数组中, 右子数组首位在 [mid+1,right]中,因此 left = mid+1
+nums[mid] != mid时, 说明在右子数组中, 左子数组末尾在 [left, mid-1]中,因此 right = mid -1
 
 返回值：当right == left时，分别指向左子数组末尾和右子数组的首位，也就是缺失的那个数字
 """
