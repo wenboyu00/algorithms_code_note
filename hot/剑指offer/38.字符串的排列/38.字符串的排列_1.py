@@ -32,15 +32,15 @@ class Solution:
     def backtrack(self, s, exist, res):
         if not s:
             res.append(exist)
-        #  排除重复内容
+        # 排除重复内容
         visited = set()
-        #  根据字符串长度遍历
-        #  除当前字符之外的字符进行组合；当字符串为空时组合完成，添加到结果中。
-        # # 递归结束后返回上一级，遍历会造成字符右移，再进行组合，最后添加到结果中。
+        # 根据字符串长度遍历
+        # 除当前字符之外的字符进行组合；当字符串为空时组合完成，添加到结果中。
+        # 递归结束后返回上一级，遍历会造成字符右移，再进行组合，最后添加到结果中。
         for i in range(len(s)):
             if s[i] in visited:
                 continue
             visited.add(s[i])
-            #  递归：s[:i]}{s[i+1:]->排除i的字符串和已经存在字符
+            #  递归：s[:i]}{s[i+1:]->排除i的字符串和已经存在字符
             self.backtrack(f'{s[:i]}{s[i + 1:]}', f'{exist}{s[i]}', res)
 # leetcode submit region end(Prohibit modification and deletion)
