@@ -1,5 +1,5 @@
 # 二分查找
-# 平方根为 s*s >=x
+# 平方根的整数为 s*s <= x的最大s值，也就是求右边界
 class Solution:
     def mySqrt(self, x: int) -> int:
         left = 0

@@ -29,3 +29,38 @@
 <ul>
 	<li><code>0 &lt;= x &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
+# Python
+
+```python
+# 二分查找
+# 平方根的整数为 s*s <= x的最大s值，也就是求右边界
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        left = 0
+        right = x
+        while left <= right:
+            mid = left + (right - left) // 2
+            if mid * mid > x:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return right
+```
+
+# Go
+
+```go
+func mySqrt(x int) int {
+    left := 0
+    right := x
+    for left <= right{
+        mid := left + (right-left) / 2
+        if (mid * mid) > x{
+            right = mid - 1
+        }else{
+            left = mid + 1
+        }
+    }
+    return right
+}
+```
