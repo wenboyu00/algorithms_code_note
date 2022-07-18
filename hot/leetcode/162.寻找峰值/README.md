@@ -40,7 +40,7 @@
 
 ```python
 """
-比较nums[mid]与nums[mid+1]
+比较nums[mid]与nums[mid+1]，left==right 循环结束
 大于时,在[l, mid]  必然存在峰值。nums[mid]相对大，所以保留
 小于时,在[mid+1, r]必然存在峰值
 """
@@ -50,6 +50,7 @@ class Solution:
     def findPeakElement(self, nums: List[int]) -> int:
         left = 0
         right = len(nums) - 1
+        # 相等时结束循环
         while left < right:
             mid = left + (right - left) // 2
             if nums[mid] > nums[mid + 1]:
