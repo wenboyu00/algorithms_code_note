@@ -1,7 +1,7 @@
 from typing import List
 
 """
-比较nums[mid]与nums[mid+1]，left==right 循环结束
+比较nums[mid]与nums[mid+1]，left==right 循环结束。初始条件left, right = 0, len(nums) - 1
 大于时,在[l, mid]  必然存在峰值。nums[mid]相对大，所以保留
 小于时,在[mid+1, r]必然存在峰值
 """
@@ -9,8 +9,7 @@ from typing import List
 
 class Solution:
     def findPeakElement(self, nums: List[int]) -> int:
-        left = 0
-        right = len(nums) - 1
+        left, right = 0, len(nums) - 1
         # 相等时结束循环
         while left < right:
             mid = left + (right - left) // 2
