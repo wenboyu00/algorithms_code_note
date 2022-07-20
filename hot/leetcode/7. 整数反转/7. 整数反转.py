@@ -17,7 +17,7 @@ class Solution:
             res = res * 10 + digit
         if flag:
             res *= -1
-        if res <= INT_MIN or res >= INT_MAX:
+        if res < INT_MIN or res > INT_MAX:
             return 0
         return res
 
