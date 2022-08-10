@@ -77,7 +77,21 @@ def maxSubArray(self, nums: List[int]) -> int:
             ans = count
     return ans
 ```
+## 解法2
+```python
+def maxSubArray(nums: List[int]) -> int:
+    ans = nums[0]
+    # pre是dp数组中dp[i-1]是上次位置的结果
+    pre = nums[0]
+    for i in range(1, len(nums)):
+        # 在累加结果和当前值 选出最大
+        pre = max(pre+nums[i], nums[i])
+        # 更新值
+        if pre> ans:
+            ans = pre
+    return ans
 
+```
 # Go
 
 ```go
